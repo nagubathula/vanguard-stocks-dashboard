@@ -698,7 +698,7 @@ export default function MultiBaggerPicks({ onSelectStock }: MultiBaggerPicksProp
               
               {/* Left Panel: Rankings Table */}
               <div className="glass-panel" style={{ padding: "20px", display: "flex", flexDirection: "column", gap: "16px" }}>
-                <h3 style={{ fontSize: "14px", fontWeight: "800", color: "var(--color-text-primary)", display: "flex", justifyContext: "space-between", alignItems: "center" }}>
+                <h3 style={{ fontSize: "14px", fontWeight: "800", color: "var(--color-text-primary)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                   <span>🏆 Leaderboard Rankings</span>
                   <span style={{ fontSize: "11px", color: "var(--color-text-muted)", fontWeight: "500", marginLeft: "auto" }}>Sorted by MBX Score</span>
                 </h3>
