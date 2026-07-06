@@ -139,7 +139,7 @@ export default function ShortTermPicks({ onSelectStock }: ShortTermPicksProps) {
           No active short-term buy triggers detected in this capitalization tier.
         </div>
       ) : (
-        <div style={{ display: "grid", gridTemplateColumns: "1.4fr 1fr", gap: "20px" }}>
+        <div className="responsive-split-grid" style={{ display: "grid", gridTemplateColumns: "1.4fr 1fr", gap: "20px" }}>
           
           {/* Left Panel: Rankings Table */}
           <div className="glass-panel" style={{ padding: "20px", display: "flex", flexDirection: "column", gap: "16px" }}>
@@ -148,7 +148,8 @@ export default function ShortTermPicks({ onSelectStock }: ShortTermPicksProps) {
               <span style={{ fontSize: "11px", color: "var(--color-text-muted)", fontWeight: "500" }}>Sorted by Alpha Conviction</span>
             </h3>
             
-            <div style={{ overflowX: "auto" }}>
+            {/* Desktop Table View */}
+            <div className="table-desktop-view" style={{ overflowX: "auto" }}>
               <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "12px" }}>
                 <thead>
                   <tr style={{ borderBottom: "1px solid var(--border-subtle)", textAlign: "left" }}>
@@ -239,6 +240,80 @@ export default function ShortTermPicks({ onSelectStock }: ShortTermPicksProps) {
                 </tbody>
               </table>
             </div>
+
+            {/* Mobile Cards View */}
+            <div className="cards-mobile-view" style={{ flexDirection: "column", gap: "10px" }}>
+              {currentList.map((item, index) => (
+                <div
+                  key={item.ticker}
+                  onClick={() => setSelectedTicker(item.ticker)}
+                  style={{
+                    padding: "12px 14px",
+                    borderRadius: "8px",
+                    border: "1px solid " + (selectedTicker === item.ticker ? "rgba(79, 70, 229, 0.4)" : "var(--border-subtle)"),
+                    background: selectedTicker === item.ticker ? "rgba(79, 70, 229, 0.04)" : "rgba(0,0,0,0.01)",
+                    cursor: "pointer",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "8px"
+                  }}
+                >
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <div>
+                      <span style={{ fontWeight: "800", color: "var(--color-text-muted)", marginRight: "6px" }}>#{index + 1}</span>
+                      <span style={{ fontWeight: "800", color: "var(--color-text-primary)", fontSize: "14px" }}>{item.ticker}</span>
+                      <span style={{ fontSize: "10px", color: "var(--color-text-muted)", marginLeft: "6px" }}>({item.sector})</span>
+                    </div>
+                    <span style={{
+                      background: `rgba(79, 70, 229, 0.08)`,
+                      color: getScoreColor(item.short_term_score),
+                      padding: "2px 6px",
+                      borderRadius: "4px",
+                      fontWeight: "800",
+                      fontSize: "11px"
+                    }}>
+                      Alpha: {item.short_term_score}
+                    </span>
+                  </div>
+
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "6px", textAlign: "center", background: "rgba(0,0,0,0.01)", padding: "6px", borderRadius: "6px" }}>
+                    <div>
+                      <div style={{ fontSize: "8px", color: "var(--color-text-muted)" }}>PRICE</div>
+                      <div style={{ fontSize: "12px", fontWeight: "700", color: "var(--color-text-primary)" }}>₹{item.price.toFixed(1)}</div>
+                    </div>
+                    <div>
+                      <div style={{ fontSize: "8px", color: "var(--color-text-muted)" }}>CHANGE</div>
+                      <div style={{ fontSize: "12px", fontWeight: "700", color: item.change_pct >= 0 ? "#059669" : "var(--color-sell)" }}>{item.change_pct >= 0 ? "+" : ""}{item.change_pct}%</div>
+                    </div>
+                    <div>
+                      <div style={{ fontSize: "8px", color: "var(--color-text-muted)" }}>1-W UP PROB</div>
+                      <div style={{ fontSize: "12px", fontWeight: "700", color: "var(--color-text-primary)" }}>{item.prob_up_1w}%</div>
+                    </div>
+                  </div>
+
+                  <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        if (onSelectStock) onSelectStock(item.ticker);
+                      }}
+                      style={{
+                        padding: "4px 10px",
+                        background: "transparent",
+                        border: "1px solid var(--accent-ml)",
+                        borderRadius: "4px",
+                        fontSize: "10px",
+                        color: "var(--accent-ml)",
+                        fontWeight: "700",
+                        cursor: "pointer"
+                      }}
+                    >
+                      Research
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
 
           {/* Right Panel: Deep-Dive Card */}
@@ -285,7 +360,7 @@ export default function ShortTermPicks({ onSelectStock }: ShortTermPicksProps) {
               <hr style={{ border: "none", borderTop: "1px solid var(--border-subtle)" }} />
 
               {/* Guages & Core Target Metrics */}
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1.2fr", gap: "16px", alignItems: "center" }}>
+              <div className="responsive-split-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1.2fr", gap: "16px", alignItems: "center" }}>
                 
                 {/* Radial Indicator Score */}
                 <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "8px", borderRight: "1px solid var(--border-subtle)", paddingRight: "16px" }}>
@@ -344,7 +419,7 @@ export default function ShortTermPicks({ onSelectStock }: ShortTermPicksProps) {
               <hr style={{ border: "none", borderTop: "1px solid var(--border-subtle)" }} />
 
               {/* Short Term Target Box */}
-              <div style={{
+              <div className="target-box-grid" style={{
                 background: "rgba(0,0,0,0.02)",
                 border: "1px solid var(--border-subtle)",
                 borderRadius: "8px",

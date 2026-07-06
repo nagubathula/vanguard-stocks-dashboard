@@ -179,7 +179,7 @@ export default function Home() {
       <DashboardHeader status={marketStatus} onRefresh={loadMarketAndStocks} />
 
       {/* Tab Switcher */}
-      <div style={{ display: "flex", gap: "8px", borderBottom: "1px solid var(--border-subtle)", paddingBottom: "12px", marginTop: "-4px" }}>
+      <div className="tab-container" style={{ display: "flex", gap: "8px", borderBottom: "1px solid var(--border-subtle)", paddingBottom: "12px", marginTop: "-4px" }}>
         {[
           { id: "opportunities", label: "🏠 Opportunities" },
           { id: "shortterm", label: "⚡ Short-Term Alpha" },
@@ -233,7 +233,7 @@ export default function Home() {
       )}
 
       {activeTab === "research" && (
-        <div style={{ display: "grid", gridTemplateColumns: "260px 1fr", gap: "16px", alignItems: "start" }} className="animate-fade-in">
+        <div className="animate-fade-in research-layout-grid" style={{ display: "grid", gridTemplateColumns: "260px 1fr", gap: "16px", alignItems: "start" }}>
           <StockSelector 
             stocks={stocks} 
             selectedTicker={selectedTicker} 

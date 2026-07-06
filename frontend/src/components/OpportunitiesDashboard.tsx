@@ -103,113 +103,206 @@ export default function OpportunitiesDashboard({ onSelectStock, onNavigateToTab 
           ⚠️ {error}
         </div>
       ) : (
-        <div className="glass-panel" style={{ padding: "0px", overflow: "hidden" }}>
-          <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "12px", textAlign: "left" }}>
-            <thead>
-              <tr style={{ background: "rgba(0,0,0,0.02)", borderBottom: "1px solid var(--border-subtle)" }}>
-                <th style={{ padding: "12px 16px", color: "var(--color-text-muted)", fontWeight: "700" }}>Rank</th>
-                <th style={{ padding: "12px 16px", color: "var(--color-text-muted)", fontWeight: "700" }}>Stock</th>
-                <th style={{ padding: "12px 16px", color: "var(--color-text-muted)", fontWeight: "700" }}>Sector</th>
-                <th style={{ padding: "12px 16px", color: "var(--color-text-muted)", fontWeight: "700", textAlign: "center" }}>Strategy Score</th>
-                <th style={{ padding: "12px 16px", color: "var(--color-text-muted)", fontWeight: "700", textAlign: "center" }}>POP</th>
-                <th style={{ padding: "12px 16px", color: "var(--color-text-muted)", fontWeight: "700", textAlign: "center" }}>Monthly Yield</th>
-                <th style={{ padding: "12px 16px", color: "var(--color-text-muted)", fontWeight: "700", textAlign: "right" }}>Spot Price</th>
-                <th style={{ padding: "12px 16px", color: "var(--color-text-muted)", fontWeight: "700" }}>Optimized Strategy Setup</th>
-                <th style={{ padding: "12px 16px", color: "var(--color-text-muted)", fontWeight: "700", textAlign: "center" }}>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredOpp.map((opp, idx) => {
-                const scoreColor = opp.strategy_score >= 85 ? "#10b981" : opp.strategy_score >= 70 ? "#3b82f6" : "#f59e0b";
-                return (
-                  <tr
-                    key={opp.ticker}
-                    onClick={() => handleRowClick(opp.ticker)}
-                    style={{
-                      borderBottom: "1px solid var(--border-subtle)",
-                      cursor: "pointer",
-                      transition: "background 0.15s"
-                    }}
-                    className="hover-row"
-                  >
-                    <td style={{ padding: "14px 16px", fontWeight: "700", color: "var(--color-text-muted)" }}>
-                      #{idx + 1}
-                    </td>
-                    <td style={{ padding: "14px 16px" }}>
-                      <div style={{ fontWeight: "800", color: "var(--color-text-primary)", fontSize: "13px" }}>
-                        {opp.ticker}
-                      </div>
-                    </td>
-                    <td style={{ padding: "14px 16px", color: "var(--color-text-secondary)" }}>
-                      {opp.sector}
-                    </td>
-                    <td style={{ padding: "14px 16px", textAlign: "center" }}>
-                      <span
-                        style={{
-                          background: `${scoreColor}15`,
-                          color: scoreColor,
-                          padding: "4px 10px",
-                          borderRadius: "20px",
-                          fontWeight: "800",
-                          fontSize: "11px",
-                          border: `1px solid ${scoreColor}30`
-                        }}
-                      >
-                        {opp.strategy_score}
-                      </span>
-                    </td>
-                    <td style={{ padding: "14px 16px", textAlign: "center", fontWeight: "700", color: "#10b981", fontSize: "13px" }}>
-                      {opp.pop}%
-                    </td>
-                    <td style={{ padding: "14px 16px", textAlign: "center", fontWeight: "700", color: "var(--color-text-primary)", fontSize: "13px" }}>
-                      {opp.expected_yield.toFixed(2)}%
-                    </td>
-                    <td style={{ padding: "14px 16px", textAlign: "right", fontWeight: "600" }}>
-                      ₹{opp.price.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
-                    </td>
-                    <td style={{ padding: "14px 16px" }}>
-                      {opp.strategy_type === "sell_call" ? (
-                        <div style={{ display: "flex", gap: "6px", alignItems: "center" }}>
-                          <span style={{ color: "#ec4899", fontWeight: "700", fontSize: "11px", background: "rgba(236, 72, 153, 0.08)", padding: "2px 6px", borderRadius: "4px" }}>
-                            SELL {opp.option_contract.split(" ").slice(2).join(" ")} (Short Call)
-                          </span>
+        <>
+          {/* Desktop Table View */}
+          <div className="table-desktop-view glass-panel table-responsive-wrapper" style={{ padding: "0px" }}>
+            <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "12px", textAlign: "left" }}>
+              <thead>
+                <tr style={{ background: "rgba(0,0,0,0.02)", borderBottom: "1px solid var(--border-subtle)" }}>
+                  <th style={{ padding: "12px 16px", color: "var(--color-text-muted)", fontWeight: "700" }}>Rank</th>
+                  <th style={{ padding: "12px 16px", color: "var(--color-text-muted)", fontWeight: "700" }}>Stock</th>
+                  <th style={{ padding: "12px 16px", color: "var(--color-text-muted)", fontWeight: "700" }}>Sector</th>
+                  <th style={{ padding: "12px 16px", color: "var(--color-text-muted)", fontWeight: "700", textAlign: "center" }}>Strategy Score</th>
+                  <th style={{ padding: "12px 16px", color: "var(--color-text-muted)", fontWeight: "700", textAlign: "center" }}>POP</th>
+                  <th style={{ padding: "12px 16px", color: "var(--color-text-muted)", fontWeight: "700", textAlign: "center" }}>Monthly Yield</th>
+                  <th style={{ padding: "12px 16px", color: "var(--color-text-muted)", fontWeight: "700", textAlign: "right" }}>Spot Price</th>
+                  <th style={{ padding: "12px 16px", color: "var(--color-text-muted)", fontWeight: "700" }}>Optimized Strategy Setup</th>
+                  <th style={{ padding: "12px 16px", color: "var(--color-text-muted)", fontWeight: "700", textAlign: "center" }}>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredOpp.map((opp, idx) => {
+                  const scoreColor = opp.strategy_score >= 85 ? "#10b981" : opp.strategy_score >= 70 ? "#3b82f6" : "#f59e0b";
+                  return (
+                    <tr
+                      key={opp.ticker}
+                      onClick={() => handleRowClick(opp.ticker)}
+                      style={{
+                        borderBottom: "1px solid var(--border-subtle)",
+                        cursor: "pointer",
+                        transition: "background 0.15s"
+                      }}
+                      className="hover-row"
+                    >
+                      <td style={{ padding: "14px 16px", fontWeight: "700", color: "var(--color-text-muted)" }}>
+                        #{idx + 1}
+                      </td>
+                      <td style={{ padding: "14px 16px" }}>
+                        <div style={{ fontWeight: "800", color: "var(--color-text-primary)", fontSize: "13px" }}>
+                          {opp.ticker}
                         </div>
+                      </td>
+                      <td style={{ padding: "14px 16px", color: "var(--color-text-secondary)" }}>
+                        {opp.sector}
+                      </td>
+                      <td style={{ padding: "14px 16px", textAlign: "center" }}>
+                        <span
+                          style={{
+                            background: `${scoreColor}15`,
+                            color: scoreColor,
+                            padding: "4px 10px",
+                            borderRadius: "20px",
+                            fontWeight: "800",
+                            fontSize: "11px",
+                            border: `1px solid ${scoreColor}30`
+                          }}
+                        >
+                          {opp.strategy_score}
+                        </span>
+                      </td>
+                      <td style={{ padding: "14px 16px", textAlign: "center", fontWeight: "700", color: "#10b981", fontSize: "13px" }}>
+                        {opp.pop}%
+                      </td>
+                      <td style={{ padding: "14px 16px", textAlign: "center", fontWeight: "700", color: "var(--color-text-primary)", fontSize: "13px" }}>
+                        {opp.expected_yield.toFixed(2)}%
+                      </td>
+                      <td style={{ padding: "14px 16px", textAlign: "right", fontWeight: "600" }}>
+                        ₹{opp.price.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
+                      </td>
+                      <td style={{ padding: "14px 16px" }}>
+                        {opp.strategy_type === "sell_call" ? (
+                          <div style={{ display: "flex", gap: "6px", alignItems: "center" }}>
+                            <span style={{ color: "#ec4899", fontWeight: "700", fontSize: "11px", background: "rgba(236, 72, 153, 0.08)", padding: "2px 6px", borderRadius: "4px" }}>
+                              SELL {opp.option_contract.split(" ").slice(2).join(" ")} (Short Call)
+                            </span>
+                          </div>
+                        ) : (
+                          <div style={{ display: "flex", gap: "6px", alignItems: "center" }}>
+                            <span style={{ color: "#3b82f6", fontWeight: "700", fontSize: "11px", background: "rgba(59, 130, 246, 0.08)", padding: "2px 6px", borderRadius: "4px" }}>
+                              BUY FUT
+                            </span>
+                            <span style={{ fontSize: "11px", fontWeight: "700" }}>+</span>
+                            <span style={{ color: "#ec4899", fontWeight: "700", fontSize: "11px", background: "rgba(236, 72, 153, 0.08)", padding: "2px 6px", borderRadius: "4px" }}>
+                              SELL {opp.option_contract.split(" ").slice(2).join(" ")}
+                            </span>
+                          </div>
+                        )}
+                      </td>
+                      <td style={{ padding: "14px 16px", textAlign: "center" }}>
+                        <button
+                          style={{
+                            background: "none",
+                            border: "1px solid var(--border-subtle)",
+                            padding: "4px 10px",
+                            borderRadius: "6px",
+                            fontSize: "11px",
+                            fontWeight: "700",
+                            color: "var(--accent-ml)",
+                            cursor: "pointer",
+                            transition: "all 0.15s"
+                          }}
+                          className="research-btn"
+                        >
+                          Research 🔬
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Mobile Cards View */}
+          <div className="cards-mobile-view" style={{ flexDirection: "column", gap: "12px" }}>
+            {filteredOpp.map((opp, idx) => {
+              const scoreColor = opp.strategy_score >= 85 ? "#10b981" : opp.strategy_score >= 70 ? "#3b82f6" : "#f59e0b";
+              return (
+                <div 
+                  key={opp.ticker} 
+                  className="glass-panel" 
+                  onClick={() => handleRowClick(opp.ticker)}
+                  style={{ padding: "16px", display: "flex", flexDirection: "column", gap: "12px", cursor: "pointer" }}
+                >
+                  {/* Top Row: Rank, Ticker & Sector */}
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                      <span style={{ fontWeight: "800", color: "var(--color-text-muted)" }}>#{idx + 1}</span>
+                      <span style={{ fontWeight: "900", color: "var(--color-text-primary)", fontSize: "15px" }}>{opp.ticker}</span>
+                      <span style={{ fontSize: "11px", color: "var(--color-text-muted)", background: "rgba(0,0,0,0.04)", padding: "2px 6px", borderRadius: "4px" }}>{opp.sector}</span>
+                    </div>
+                    <span
+                      style={{
+                        background: `${scoreColor}15`,
+                        color: scoreColor,
+                        padding: "4px 10px",
+                        borderRadius: "20px",
+                        fontWeight: "800",
+                        fontSize: "11px",
+                        border: `1px solid ${scoreColor}30`
+                      }}
+                    >
+                      Score: {opp.strategy_score}
+                    </span>
+                  </div>
+
+                  {/* Middle Row: Metrics Grid */}
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "8px", background: "rgba(0,0,0,0.015)", padding: "10px", borderRadius: "8px", textAlign: "center" }}>
+                    <div>
+                      <div style={{ fontSize: "9px", color: "var(--color-text-muted)", fontWeight: "700" }}>POP</div>
+                      <div style={{ fontSize: "13px", fontWeight: "800", color: "#10b981", marginTop: "2px" }}>{opp.pop}%</div>
+                    </div>
+                    <div>
+                      <div style={{ fontSize: "9px", color: "var(--color-text-muted)", fontWeight: "700" }}>YIELD</div>
+                      <div style={{ fontSize: "13px", fontWeight: "800", color: "var(--color-text-primary)", marginTop: "2px" }}>{opp.expected_yield.toFixed(2)}%</div>
+                    </div>
+                    <div>
+                      <div style={{ fontSize: "9px", color: "var(--color-text-muted)", fontWeight: "700" }}>SPOT PRICE</div>
+                      <div style={{ fontSize: "13px", fontWeight: "800", color: "var(--color-text-primary)", marginTop: "2px" }}>₹{opp.price.toLocaleString("en-IN", { maximumFractionDigits: 1 })}</div>
+                    </div>
+                  </div>
+
+                  {/* Bottom Row: Strategy Setup & Research Button */}
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "8px" }}>
+                    <div>
+                      {opp.strategy_type === "sell_call" ? (
+                        <span style={{ color: "#ec4899", fontWeight: "700", fontSize: "11px", background: "rgba(236, 72, 153, 0.08)", padding: "2px 6px", borderRadius: "4px" }}>
+                          SELL {opp.option_contract.split(" ").slice(2).join(" ")} (Short Call)
+                        </span>
                       ) : (
-                        <div style={{ display: "flex", gap: "6px", alignItems: "center" }}>
-                          <span style={{ color: "#3b82f6", fontWeight: "700", fontSize: "11px", background: "rgba(59, 130, 246, 0.08)", padding: "2px 6px", borderRadius: "4px" }}>
+                        <div style={{ display: "flex", gap: "4px", alignItems: "center" }}>
+                          <span style={{ color: "#3b82f6", fontWeight: "700", fontSize: "10px", background: "rgba(59, 130, 246, 0.08)", padding: "2px 6px", borderRadius: "4px" }}>
                             BUY FUT
                           </span>
-                          <span style={{ fontSize: "11px", fontWeight: "700" }}>+</span>
-                          <span style={{ color: "#ec4899", fontWeight: "700", fontSize: "11px", background: "rgba(236, 72, 153, 0.08)", padding: "2px 6px", borderRadius: "4px" }}>
+                          <span style={{ fontSize: "10px", fontWeight: "700" }}>+</span>
+                          <span style={{ color: "#ec4899", fontWeight: "700", fontSize: "10px", background: "rgba(236, 72, 153, 0.08)", padding: "2px 6px", borderRadius: "4px" }}>
                             SELL {opp.option_contract.split(" ").slice(2).join(" ")}
                           </span>
                         </div>
                       )}
-                    </td>
-                    <td style={{ padding: "14px 16px", textAlign: "center" }}>
-                      <button
-                        style={{
-                          background: "none",
-                          border: "1px solid var(--border-subtle)",
-                          padding: "4px 10px",
-                          borderRadius: "6px",
-                          fontSize: "11px",
-                          fontWeight: "700",
-                          color: "var(--accent-ml)",
-                          cursor: "pointer",
-                          transition: "all 0.15s"
-                        }}
-                        className="research-btn"
-                      >
-                        Research 🔬
-                      </button>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
+                    </div>
+                    <button
+                      className="research-btn"
+                      style={{
+                        background: "none",
+                        border: "1px solid var(--border-subtle)",
+                        padding: "6px 12px",
+                        borderRadius: "6px",
+                        fontSize: "11px",
+                        fontWeight: "700",
+                        color: "var(--accent-ml)",
+                        cursor: "pointer",
+                        transition: "all 0.15s"
+                      }}
+                    >
+                      Research 🔬
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </>
       )}
       <style>{`
         .hover-row:hover {

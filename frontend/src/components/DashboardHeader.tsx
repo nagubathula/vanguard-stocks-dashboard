@@ -50,18 +50,53 @@ export default function DashboardHeader({ status, onRefresh }: DashboardHeaderPr
   }
 
   return (
-    <header className="glass-panel" style={{ padding: "18px 24px", marginBottom: "20px", display: "grid", gridTemplateColumns: "auto 1fr auto", gap: "20px", alignItems: "center" }}>
-      {/* Brand logo */}
-      <div>
-        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-          <div style={{ width: "12px", height: "12px", borderRadius: "50%", background: "var(--accent-ml)", boxShadow: "0 0 10px var(--accent-ml)" }}></div>
-          <h1 style={{ fontSize: "22px", letterSpacing: "1px", fontFamily: "var(--font-display)", fontWeight: "800", background: "linear-gradient(90deg, var(--color-text-primary), var(--accent-ml))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Personalised Recommendations</h1>
+    <header className="glass-panel dashboard-header-container" style={{ marginBottom: "20px" }}>
+      <div className="header-top-row">
+        {/* Brand logo */}
+        <div>
+          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            <div style={{ width: "12px", height: "12px", borderRadius: "50%", background: "var(--accent-ml)", boxShadow: "0 0 10px var(--accent-ml)" }}></div>
+            <h1 style={{ fontSize: "22px", letterSpacing: "1px", fontFamily: "var(--font-display)", fontWeight: "800", background: "linear-gradient(90deg, var(--color-text-primary), var(--accent-ml))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Personalised Recommendations</h1>
+          </div>
+          <div style={{ fontSize: "11px", color: "var(--color-text-muted)", marginTop: "2px", textTransform: "uppercase", letterSpacing: "2px" }}>Hedge-Fund Scoring Consensus</div>
         </div>
-        <div style={{ fontSize: "11px", color: "var(--color-text-muted)", marginTop: "2px", textTransform: "uppercase", letterSpacing: "2px" }}>Hedge-Fund Scoring Consensus</div>
+
+        {/* Regime Status and Simulation Controls */}
+        <div style={{ display: "flex", alignItems: "center", gap: "16px", flexWrap: "wrap" }}>
+          {/* Regime indicator badge */}
+          <div className={`glass-panel ${regimeClass}`} style={{ padding: "6px 12px", border: "1px solid transparent", display: "flex", flexDirection: "column", alignItems: "flex-end" }}>
+            <div style={{ fontSize: "9px", color: "var(--color-text-muted)", textTransform: "uppercase", letterSpacing: "1px", fontWeight: "600" }}>Market Regime</div>
+            <div style={{ fontSize: "14px", fontWeight: "800", color: regimeColor }}>{status.regime}</div>
+          </div>
+
+          {/* Override controls */}
+          <div style={{ display: "flex", gap: "8px" }}>
+            <select 
+              onChange={(e) => handleSimulate(e.target.value)}
+              disabled={loading}
+              defaultValue=""
+              style={{ 
+                fontSize: "12px", 
+                padding: "6px 10px", 
+                background: "var(--bg-card)", 
+                color: "var(--color-text-primary)",
+                border: "1px solid var(--border-subtle)", 
+                borderRadius: "6px",
+                cursor: "pointer",
+                outline: "none"
+              }}
+            >
+              <option value="" disabled style={{ color: "var(--color-text-muted)" }}>🔧 Select Regime Simulation</option>
+              <option value="NORMAL" style={{ color: "var(--color-text-primary)" }}>🟢 Standard Sideways/Bull</option>
+              <option value="BEAR" style={{ color: "var(--color-text-primary)" }}>🔴 Bear Market Crash (High VIX / NASDAQ drop)</option>
+              <option value="HIGH_VOLATILITY" style={{ color: "var(--color-text-primary)" }}>⚠️ High Volatility Spike (VIX &gt; 28)</option>
+            </select>
+          </div>
+        </div>
       </div>
 
       {/* Ticker stream */}
-      <div style={{ display: "flex", gap: "24px", overflowX: "auto", padding: "4px 0", fontSize: "13px", borderLeft: "1px solid var(--border-subtle)", paddingLeft: "24px" }} className="hide-scrollbar">
+      <div className="header-ticker-bar hide-scrollbar">
         <div>
           <span style={{ color: "var(--color-text-secondary)" }}>NIFTY 50: </span>
           <span style={{ fontWeight: "600" }}>{status.nifty_close.toLocaleString(undefined, { maximumFractionDigits: 1 })}</span>
@@ -84,39 +119,6 @@ export default function DashboardHeader({ status, onRefresh }: DashboardHeaderPr
         <div>
           <span style={{ color: "var(--color-text-secondary)" }}>US 10Y: </span>
           <span>{status.us10y.toFixed(2)}%</span>
-        </div>
-      </div>
-
-      {/* Regime Status and Simulation Controls */}
-      <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-        {/* Regime indicator badge */}
-        <div className={`glass-panel ${regimeClass}`} style={{ padding: "6px 12px", border: "1px solid transparent", display: "flex", flexDirection: "column", alignItems: "flex-end" }}>
-          <div style={{ fontSize: "9px", color: "var(--color-text-muted)", textTransform: "uppercase", letterSpacing: "1px", fontWeight: "600" }}>Market Regime</div>
-          <div style={{ fontSize: "14px", fontWeight: "800", color: regimeColor }}>{status.regime}</div>
-        </div>
-
-        {/* Override controls */}
-        <div style={{ display: "flex", gap: "8px" }}>
-          <select 
-            onChange={(e) => handleSimulate(e.target.value)}
-            disabled={loading}
-            defaultValue=""
-            style={{ 
-              fontSize: "12px", 
-              padding: "6px 10px", 
-              background: "var(--bg-card)", 
-              color: "var(--color-text-primary)",
-              border: "1px solid var(--border-subtle)", 
-              borderRadius: "6px",
-              cursor: "pointer",
-              outline: "none"
-            }}
-          >
-            <option value="" disabled style={{ color: "var(--color-text-muted)" }}>🔧 Select Regime Simulation</option>
-            <option value="NORMAL" style={{ color: "var(--color-text-primary)" }}>🟢 Standard Sideways/Bull</option>
-            <option value="BEAR" style={{ color: "var(--color-text-primary)" }}>🔴 Bear Market Crash (High VIX / NASDAQ drop)</option>
-            <option value="HIGH_VOLATILITY" style={{ color: "var(--color-text-primary)" }}>⚠️ High Volatility Spike (VIX &gt; 28)</option>
-          </select>
         </div>
       </div>
     </header>

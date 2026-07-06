@@ -40,7 +40,7 @@ export default function StockSelector({ stocks, selectedTicker, onSelect }: Stoc
   };
 
   return (
-    <aside className="glass-panel" style={{ height: "calc(100vh - 24px)", position: "sticky", top: "12px", display: "flex", flexDirection: "column", padding: "16px", gap: "12px", overflow: "hidden" }}>
+    <aside className="glass-panel stock-selector-aside" style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
       {/* Search Bar */}
       <div>
         <input 
