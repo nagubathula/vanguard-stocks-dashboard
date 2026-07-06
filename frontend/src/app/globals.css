@@ -1,0 +1,189 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap');
+
+:root {
+  /* Color Palette (Light Theme) */
+  --bg-main: #f8fafc;
+  --bg-card: #ffffff;
+  --bg-card-hover: #f1f5f9;
+  --bg-terminal: #f1f5f9;
+  
+  --border-subtle: #e2e8f0;
+  --border-glow: rgba(79, 70, 229, 0.2);
+  
+  --color-text-primary: #0f172a;
+  --color-text-secondary: #475569;
+  --color-text-muted: #64748b;
+  
+  /* Neon Ratings */
+  --color-buy: #059669;
+  --color-buy-glow: rgba(5, 150, 105, 0.12);
+  --color-sell: #dc2626;
+  --color-sell-glow: rgba(220, 38, 38, 0.12);
+  --color-hold: #d97706;
+  --color-hold-glow: rgba(217, 119, 6, 0.12);
+  
+  /* Agent & System Accents */
+  --accent-tech: #0891b2;
+  --accent-ml: #4f46e5;
+  --accent-regime: #b45309;
+  
+  --bg-button-unselected: rgba(0, 0, 0, 0.03);
+  
+  /* Font Families */
+  --font-main: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-display: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.15) transparent;
+}
+
+body {
+  background-color: var(--bg-main);
+  color: var(--color-text-primary);
+  font-family: var(--font-main);
+  overflow-x: hidden;
+  line-height: 1.5;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: 600;
+}
+
+/* Glassmorphism utilities */
+.glass-panel {
+  background: var(--bg-card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-panel:hover {
+  background: var(--bg-card-hover);
+  border-color: rgba(0, 0, 0, 0.12);
+}
+
+/* Custom glowing effects */
+.glow-buy {
+  box-shadow: 0 0 15px var(--color-buy-glow);
+  border-color: rgba(5, 150, 105, 0.35) !important;
+}
+
+.glow-sell {
+  box-shadow: 0 0 15px var(--color-sell-glow);
+  border-color: rgba(220, 38, 38, 0.35) !important;
+}
+
+.glow-hold {
+  box-shadow: 0 0 15px var(--color-hold-glow);
+  border-color: rgba(217, 119, 6, 0.35) !important;
+}
+
+.glow-purple {
+  box-shadow: 0 0 15px rgba(79, 70, 229, 0.12);
+  border-color: rgba(79, 70, 229, 0.35) !important;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+/* Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.25);
+}
+
+/* Micro layouts */
+.container-grid {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  height: 100vh;
+  max-height: 100vh;
+  overflow: hidden;
+}
+
+@media (max-width: 1024px) {
+  .container-grid {
+    grid-template-columns: 1fr;
+    height: auto;
+    overflow: auto;
+  }
+}
+
+/* Input Styles */
+input, select, button {
+  background: rgba(0, 0, 0, 0.02);
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  color: var(--color-text-primary);
+  font-family: inherit;
+  padding: 8px 12px;
+  outline: none;
+  transition: all 0.2s;
+}
+
+input:focus, select:focus {
+  border-color: var(--accent-ml);
+  background: rgba(0, 0, 0, 0.04);
+}
+
+button {
+  cursor: pointer;
+  font-weight: 500;
+}
+
+button:hover {
+  background: rgba(0, 0, 0, 0.03);
+  border-color: var(--color-text-secondary);
+}
+
+button.primary {
+  background: var(--accent-ml);
+  border-color: transparent;
+  color: #fff;
+}
+
+button.primary:hover {
+  background: #3b31df;
+  box-shadow: 0 0 10px rgba(79, 70, 229, 0.4);
+}
+
+/* Heatmap cell hover effect */
+.heatmap-cell {
+  transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.15s !important;
+}
+
+.heatmap-cell:hover {
+  transform: scale(1.05) translateY(-1px);
+  z-index: 10;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12), inset 0 0 0 1px rgba(255, 255, 255, 0.25) !important;
+}

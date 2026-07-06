@@ -1,0 +1,23 @@
+# Frontend dependencies and builds
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/build/
+frontend/*.tsbuildinfo
+frontend/next-env.d.ts
+frontend/.env*
+frontend/.vercel/
+
+# Backend dependencies and cache
+backend/venv/
+backend/__pycache__/
+backend/*.pyc
+backend/uvicorn.log
+backend/.pytest_cache/
+backend/scratch/
+
+# System and editor files
+.DS_Store
+*.pem
+.idea/
+.vscode/
